@@ -52,4 +52,27 @@ public class Image {
 
         writer.close();
     }
+
+    /*
+     * Sauvegarde de l'image au format raw (P5)
+     */
+    public void save_raw(String filename) throws IOException{
+		FileWriter writer = new FileWriter(filename);         
+  
+        writer.write("P5\n");
+        writer.write(width + " ");
+        writer.write(height + "\n");
+        writer.write("255" + "\n");
+        for (int compteur = 0; compteur < height; compteur++){
+            for (int indice = 0; indice < width; indice++){
+		Byte b = new byte[3];
+                writer.write(pixels[compteur][indice][0] + " ");
+                writer.write(pixels[compteur][indice][1] + " ");
+                writer.write(pixels[compteur][indice][2] + " ");
+            }
+            writer.write("\n");
+        }
+
+        writer.close();
+    }
 }
