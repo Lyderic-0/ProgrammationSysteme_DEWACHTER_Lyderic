@@ -7,6 +7,8 @@ public class Image {
     // pixels[y][x][0=R,1=G,2=B]
     private int[][][] pixels; // pixels[y][x][0=R,1=G,2=B]
 
+    private byte[][][] pixelsByte;
+
     public int getWidth() { return width; }
     public int getHeight() { return height; }
 
@@ -17,6 +19,7 @@ public class Image {
         this.width = width;
         this.height = height;
         pixels = new int[height][width][3];
+        pixelsByte = new byte[height][width][3];
     }
 
     /**
@@ -27,6 +30,10 @@ public class Image {
             pixels[y][x][0] = r;
             pixels[y][x][1] = g;
             pixels[y][x][2] = b;
+
+            pixelsByte[y][x][0] = r;
+            pixelsByte[y][x][1] = g;
+            pixelsByte[y][x][2] = b;
         }
     }
 
@@ -54,21 +61,22 @@ public class Image {
     }
 
     /*
-     * Sauvegarde de l'image au format raw (P5)
+     * Sauvegarde de l'image au format raw (P6)
      */
     public void save_raw(String filename) throws IOException{
-		FileWriter writer = new FileWriter(filename);         
+		FileOutputStream writer = new FileOutputStream(filename);         
   
-        writer.write("P5\n");
+        writer.write("P6\n");
         writer.write(width + " ");
         writer.write(height + "\n");
         writer.write("255" + "\n");
-        for (int compteur = 0; compteur < height; compteur++){
+		
+		for (int compteur = 0; compteur < height; compteur++){
             for (int indice = 0; indice < width; indice++){
-		Byte b = new byte[3];
-                writer.write(pixels[compteur][indice][0] + " ");
-                writer.write(pixels[compteur][indice][1] + " ");
-                writer.write(pixels[compteur][indice][2] + " ");
+				out.write(pixelsByte[y][x][0]); 
+				out.write(pixelsByte[y][x][1]); 
+				out.write(pixelsByte[y][x][2]); 
+               
             }
             writer.write("\n");
         }
