@@ -74,25 +74,25 @@ public class MemoryManager {
     }
 	
 	public boolean setBlockUsed(int blockNumber, boolean used) {
-    if (blockNumber < 0 ||
-        blockNumber >= NUM_BLOCKS) {
-        return false;
-    }
+		if (blockNumber < 0 || blockNumber >= NUM_BLOCKS) {
+			return false;
+		}
 
-    int byteIndex = blockNumber / 8;
-    int bitPosition = blockNumber % 8;
-    int offset = BITMAP_OFFSET + byteIndex;
+	
+		int byteIndex = blockNumber / 8;
+		int bitPosition = blockNumber % 8;
+		int offset = BITMAP_OFFSET + byteIndex;
 
-    if (used) {
-        // TODO:
-        // Positionner le bit à 1.
-    } else {
-        // TODO:
-        // Positionner le bit à 0.
-    }
-
-    return true;
-}
+		// TODO Vérifier
+		if (used) {
+			byte data = memory[byteIndex + BITMAP_OFFSET];
+			return (data >> bitPosition) & 0x1;
+		} else {
+			byte data = memory[byteIndex + BITMAP_OFFSET];
+			return (data >> bitPosition) ^ 0xFF;
+		}
+		return true;
+	}    
 
 	public int isBlockUsed(int blockNumber) {
 
@@ -105,8 +105,14 @@ public class MemoryManager {
 		// Calculer byteIndex.
 		// Calculer bitPosition.
 		// Lire le bit.
+		
+		
+		// TODO Vérifier
+		byteIndex = blockNumber / 8;
+		bitPosition = blockNumber % 8;	
+		offset = BITMAP_OFFSET + byteIndex;
 
-		return -1;
+		return Utils.readInt(memory, offset);
 	}
 
 	public int allocateBlock() {
@@ -117,6 +123,18 @@ public class MemoryManager {
 		//
 		// Retourner le premier bloc libre.
 		// Le marquer immédiatement comme utilisé.
+		
+		
+		// TODO Vérifier
+		for (int i = 129; i < NUM_BLOCKS - 1; i++){
+			boolean isLibre;
+			
+			if (Utils.readInt(memory, i) == 0){				
+				return setBlockUsed(blockNumber, true);
+			}
+	
+		}
+		
 
 		return -1;
 	}

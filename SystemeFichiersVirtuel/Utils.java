@@ -49,7 +49,7 @@ public class Utils {
 	}
 		
 	public static int writeLong(byte[] memory, int offset, long value) {
-		memory[offset]      = (byte) (value >> 56);
+		memory[offset]     = (byte) (value >> 56);
         memory[offset + 1] = (byte) (value >> 48);
         memory[offset + 2] = (byte) (value >> 40);
         memory[offset + 3] = (byte) (value >> 32);
