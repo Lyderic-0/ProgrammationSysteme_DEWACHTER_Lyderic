@@ -74,8 +74,8 @@ public class Inode {
     cursor += Utils.writeLong(memory, cursor, modificationTime);
 
     // 28..67
-    for (int i = 0; i < DIRECT_POINTERS; i++) {
-        int ptr = (directPointers != null && i < directPointers.length) ? directPointers[i] : 0;
+    for (int compteur = 0; compteur < DIRECT_POINTERS; compteur++) {
+        int ptr = (directPointers != null && compteur < directPointers.length) ? directPointers[compteur] : 0;
         cursor += Utils.writeInt(memory, cursor, ptr);
     }
 
