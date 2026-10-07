@@ -33,15 +33,59 @@ public class Inode {
     }
 
     public int[] getDirectPointers() {
-        byte[] memory = memoryManager.getFilesystemMemory();
-        int[] pointers = new int[DIRECT_POINTERS];
+    byte[] memory = memoryManager.getFilesystemMemory();
+    int[] pointers = new int[DIRECT_POINTERS];
 
-        int startOffset = getInodeOffset() + 12;
+    int startOffset = getInodeOffset() + 28;
 
-        for (int compteur = 0;  compteur< DIRECT_POINTERS; i++) {
-            pointers[compteur] = Utils.readInt(memory, startOffset + (compteur * 4));
-        }
-
-        return pointers;
+    for (int compteur = 0; compteur < DIRECT_POINTERS; compteur++) {
+        pointers[compteur] = Utils.readInt(memory, startOffset + (compteur * 4));
     }
+
+    return pointers;
+}
+	
+	public void writeToMemory(
+        int fileType,
+        int fileSize,
+        long creationTime,
+        long modificationTime,
+        int[] directPointers,
+        int indirectPointer,
+        short permissions,
+        int linkCount) {
+
+    byte[] memory = memoryManager.getFilesystemMemory();
+    int cursor = getInodeOffset();
+
+    // 0..3
+    cursor += Utils.writeInt(memory, cursor, this.inodeNumber);
+
+    // 4..7
+    cursor += Utils.writeInt(memory, cursor, fileType);
+
+    // 8..11
+    cursor += Utils.writeInt(memory, cursor, fileSize);
+
+    // 12..19
+    cursor += Utils.writeLong(memory, cursor, creationTime);
+
+    // 20..27
+    cursor += Utils.writeLong(memory, cursor, modificationTime);
+
+    // 28..67
+    for (int i = 0; i < DIRECT_POINTERS; i++) {
+        int ptr = (directPointers != null && i < directPointers.length) ? directPointers[i] : 0;
+        cursor += Utils.writeInt(memory, cursor, ptr);
+    }
+
+    // 68..71
+    cursor += Utils.writeInt(memory, cursor, indirectPointer);
+
+    // 72..73
+    cursor += Utils.writeShort(memory, cursor, permissions);
+
+    // 74..77
+    cursor += Utils.writeInt(memory, cursor, linkCount);
+}
 }
