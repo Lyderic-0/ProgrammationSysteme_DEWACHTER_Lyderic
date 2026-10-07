@@ -31,13 +31,6 @@ public class MemoryManager {
 
     private void initializeFilesystem() {
         writeSuperblock();
-
-		
-		for (int i = 0; i < 16; i++) {
-			memory[BITMAP_OFFSET + i] = (byte) 0xFF;
-		}	
-
-		memory[BITMAP_OFFSET + 16] = (byte) 0x01;
     }
 
     private void writeSuperblock() {
