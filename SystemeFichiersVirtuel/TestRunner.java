@@ -4,6 +4,8 @@ public class TestRunner{
 		testStep2();
 		testStep3();
 		testStep4();
+		testStep5();
+		testStep6();
 	}
 	public static void testStep2() {
 		System.out.println("=== TEST ÉTAPE 2 : Utils Entiers ===");
