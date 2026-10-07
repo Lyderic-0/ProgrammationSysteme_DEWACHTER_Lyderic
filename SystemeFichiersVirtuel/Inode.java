@@ -22,14 +22,14 @@ public class Inode {
         byte[] memory = memoryManager.getFilesystemMemory();
         int offset = getInodeOffset() + 4;
         
-        return ByteBuffer.wrap(memory).getInt(offset);
+        return Utils.readInt(memory, offset);
     }
 
     public int getFileSize() {
         byte[] memory = memoryManager.getFilesystemMemory();
         int offset = getInodeOffset() + 8;
         
-        return ByteBuffer.wrap(memory).getInt(offset);
+        return Utils.readInt(memory, offset);
     }
 
     public int[] getDirectPointers() {
@@ -37,10 +37,9 @@ public class Inode {
         int[] pointers = new int[DIRECT_POINTERS];
 
         int startOffset = getInodeOffset() + 12;
-        ByteBuffer buffer = ByteBuffer.wrap(memory);
 
-        for (int i = 0; i < DIRECT_POINTERS; i++) {
-            pointers[i] = buffer.getInt(startOffset + (i * Integer.BYTES));
+        for (int compteur = 0;  compteur< DIRECT_POINTERS; i++) {
+            pointers[compteur] = Utils.readInt(memory, startOffset + (compteur * 4));
         }
 
         return pointers;

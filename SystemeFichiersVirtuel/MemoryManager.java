@@ -99,9 +99,9 @@ public class MemoryManager {
 		}
 
 
-		byteIndex = blockNumber / 8;
-		bitPosition = blockNumber % 8;	
-		offset = BITMAP_OFFSET + byteIndex;
+		int byteIndex = blockNumber / 8;
+		int bitPosition = blockNumber % 8;	
+		int offset = BITMAP_OFFSET + byteIndex;
 
 		return (memory[offset] & (1 << bitPosition)) != 0 ? 1 : 0;
 	}
