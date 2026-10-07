@@ -12,6 +12,7 @@ public class TestRunner{
 		testStep7();
 		testStep8();
 		testStep9();
+		testStep10();
 		
 		if (args.length > 0) {
 			testExternalFile(args[0]);
@@ -407,6 +408,8 @@ public class TestRunner{
 
 		System.out.println("[OK] Étape 9 validée !");
 	}
+	
+		
 		
 	public static void testExternalFile(
 			String filename) {

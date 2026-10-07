@@ -1,0 +1,44 @@
+Question 1 : Représentation binaire
+Pourquoi est-il nécessaire de définir explicitement une convention telle que big-endian lorsqu’une structure est stockée dans un tableau de byte ? Que se passerait-il si writeInt utilisait big-endian mais readInt supposait little-endian sur une autre machine ?
+
+Car la convention big-endian modifie l'organisation des bytes ( leur position ), ici du plus fort au plus faible, donc une méthode comme readInt qui lit en little-endian, aurait la représentation inverse des données.
+
+Question 2 : Signes et octets
+Pourquoi une opération telle que memory[offset] & 0xFF est-elle importante lors de la reconstruction d’une valeur entière ? Expliquez le rôle de l’opéraateur binnaire en Java.
+
+En java, le type byte va être transformé en int durant son interprétation et & 0FF force à ne pas signer l'octet donné.
+
+Question 3 : Sérialisation
+Pourquoi tester uniquement readInt(writeInt(x)) == x peut-il être insuffisant ? Et si oui comment sampler correctement les valeurs de x ? Expliquez en quoi l’inspection directe des octets permet de détecter davantage de classes d’erreurs.
+
+Comme vu précédement si readInt et writeInt utilisent la même convention pour former / lire un int alors pas de problème pour lire les données mais si on a des conventions differentes, deux valeurs peuvent par exemple être considéré comme égales alors qu'elles ne le sont pas ( inversion sité au 1 )
+Il faut donc lire byte par byte les données
+
+Question 4 : Bitmap
+Pourquoi un bitmap est-il plus compact qu’une représentation utilisant un entier par bloc ? Exprimez la taille du bitmap en fonction du nombre de blocs.
+
+La bitmap utilise un bit par bloc, soit vide soit il contient des valeurs, la taille de la bit map dépend de nombre de blocs à raison de nombreBlocs/8.
+
+Question 5 : Layout
+Pourquoi les structures du système de fichiers doivent-elles occuper des zones mémoire déterministes ? Que se passerait-il si la position du bitmap changeait sans que les méthodes qui l’utilisent soient modifiées ?
+
+Les zones de mémoires doivent êtres déterministes car par exemple si l'offset de la bitmap change et que la méthode accédee à cet offset, cela risque du déplacer toutesles valeurs et une partie des zones de données seront écrasés par les données de la bitmap.
+
+Question 6 : Inode
+Pourquoi séparer les métadonnées du fichier de son contenu ? Expliquez pourquoi un inode peut être considéré comme une structure permettant de retrouver le contenu d’un fichier sans contenir directement ce contenu.
+
+L'inode contient une référence à l'endroit ou sont stockés les données, les métadonnées ne sont que des références au contenu du fichier.
+
+Question 7 : Allocation
+Pourquoi allocateBlock() doit-il commencer à rechercher à partir du bloc 129 ? Que se passerait-il si la recherche commençait au bloc 0 ?
+
+En dessous du bloc 129 se trouve la bitmap, le superbloc.. et donc la méthode allocateBlock() allouerais des données sur la bitmap.
+
+Question 8 : Fragmentation
+Deux systèmes peuvent-ils posséder exactement le même nombre de blocs libres mais présenter des niveaux de fragmentation différents ? Justifiez votre réponse avec une représentation sous forme de séquence de blocs libres et occupés.
+
+[Occupé] [Occupé] [Occupé] [Occupé] [Libre] [Libre] [Libre] [Libre]
+[Occupé] [Libre] [Occupé] [Libre] [Occupé] [Libre] [Occupé] [Libre]
+
+Dans le premier cas on a pas de fragmentation et 4 blocs libres
+Dans le deuxième on a beacoup de fragmentation et quand même 4 blocs libres
