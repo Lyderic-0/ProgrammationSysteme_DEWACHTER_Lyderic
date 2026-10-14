@@ -31,13 +31,6 @@ public class MemoryManager {
 
     private void initializeFilesystem() {
         writeSuperblock();
-
-		
-		for (int i = 0; i < 16; i++) {
-			memory[BITMAP_OFFSET + i] = (byte) 0xFF;
-		}	
-
-		memory[BITMAP_OFFSET + 16] = (byte) 0x01;
     }
 
     private void writeSuperblock() {
@@ -83,14 +76,11 @@ public class MemoryManager {
 		int bitPosition = blockNumber % 8;
 		int offset = BITMAP_OFFSET + byteIndex;
 
-		// TODO Vérifier
 		if (used) {
-			byte data = memory[byteIndex + BITMAP_OFFSET];
-			return (data >> bitPosition) & 0x1;
-		} else {
-			byte data = memory[byteIndex + BITMAP_OFFSET];
-			return (data >> bitPosition) ^ 0xFF;
-		}
+                memory[offset] |= (1 << bitPosition);
+            } else {
+                memory[offset] &= ~(1 << bitPosition);
+            }
 		return true;
 	}    
 
@@ -101,40 +91,22 @@ public class MemoryManager {
 			return -1;
 		}
 
-		// TODO:
-		// Calculer byteIndex.
-		// Calculer bitPosition.
-		// Lire le bit.
-		
-		
-		// TODO Vérifier
-		byteIndex = blockNumber / 8;
-		bitPosition = blockNumber % 8;	
-		offset = BITMAP_OFFSET + byteIndex;
 
-		return Utils.readInt(memory, offset);
+		int byteIndex = blockNumber / 8;
+		int bitPosition = blockNumber % 8;	
+		int offset = BITMAP_OFFSET + byteIndex;
+
+		return (memory[offset] & (1 << bitPosition)) != 0 ? 1 : 0;
 	}
 
 	public int allocateBlock() {
 
-		// TODO:
-		// Parcourir les blocs de données :
-		// 129 .. NUM_BLOCKS - 1.
-		//
-		// Retourner le premier bloc libre.
-		// Le marquer immédiatement comme utilisé.
-		
-		
-		// TODO Vérifier
-		for (int i = 129; i < NUM_BLOCKS - 1; i++){
-			boolean isLibre;
-			
-			if (Utils.readInt(memory, i) == 0){				
-				return setBlockUsed(blockNumber, true);
-			}
-	
-		}
-		
+		for (int i = 129; i < NUM_BLOCKS; i++) {
+                if (isBlockUsed(i) == 0) {
+                    setBlockUsed(i, true);
+                    return i;
+                }
+            }
 
 		return -1;
 	}

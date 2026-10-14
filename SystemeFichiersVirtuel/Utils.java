@@ -49,40 +49,39 @@ public class Utils {
 	}
 		
 	public static int writeLong(byte[] memory, int offset, long value) {
-		memory[offset]     = (byte) (value >> 56);
-        memory[offset + 1] = (byte) (value >> 48);
-        memory[offset + 2] = (byte) (value >> 40);
-        memory[offset + 3] = (byte) (value >> 32);
-		memory[offset + 4] = (byte) (value >> 24);
-        memory[offset + 5] = (byte) (value >> 16);
-        memory[offset + 6] = (byte) (value >> 8);
-        memory[offset + 7] = (byte) value;
-		
-		return 8;
-	}
+    memory[offset]     = (byte) (value >> 56);
+    memory[offset + 1] = (byte) (value >> 48);
+    memory[offset + 2] = (byte) (value >> 40);
+    memory[offset + 3] = (byte) (value >> 32);
+    memory[offset + 4] = (byte) (value >> 24);
+    memory[offset + 5] = (byte) (value >> 16);
+    memory[offset + 6] = (byte) (value >> 8);
+    memory[offset + 7] = (byte) value;
 
-	public static long readLong(byte[] memory, int offset) {
-		byte b1 = memory[offset];
-		byte b2 = memory[offset + 1];
-		byte b3 = memory[offset + 2];
-		byte b4 = memory[offset + 3];
-		byte b5 = memory[offset + 4];
-		byte b6 = memory[offset + 5];
-		byte b7 = memory[offset + 6];
-		byte b8 = memory[offset + 7];
+    return 8;
+}
 
-		long l1 = ((long) b1 & 0xFF) << 56;
-		long l2 = ((long) b2 & 0xFF) << 48;
-		long l3 = ((long) b3 & 0xFF) << 40;
-		long l4 = ((long) b4 & 0xFF) << 32;
-		long l5 = ((long) b5 & 0xFF) << 24;
-		long l6 = ((long) b6 & 0xFF) << 16;
-		long l7 = ((long) b7 & 0xFF) << 8;
-		long l8 = ((long) b8 & 0xFF);
+	public static long readLong(byte[] memory, int offset) { 
+        long b1 = memory[offset]     & 0xFFL; 
+        long b2 = memory[offset + 1] & 0xFFL; 
+        long b3 = memory[offset + 2] & 0xFFL; 
+        long b4 = memory[offset + 3] & 0xFFL; 
+        long b5 = memory[offset + 4] & 0xFFL; 
+        long b6 = memory[offset + 5] & 0xFFL; 
+        long b7 = memory[offset + 6] & 0xFFL; 
+        long b8 = memory[offset + 7] & 0xFFL; 
 
-		long valeur = l1 | l2 | l3 | l4 | l5 | l6 | l7 | l8;
-		return valeur;
-	}
+        long l1 = b1 << 56; 
+        long l2 = b2 << 48; 
+        long l3 = b3 << 40; 
+        long l4 = b4 << 32; 
+        long l5 = b5 << 24; 
+        long l6 = b6 << 16; 
+        long l7 = b7 << 8; 
+        long l8 = b8; 
+
+        return l1 | l2 | l3 | l4 | l5 | l6 | l7 | l8; 
+    }
 
 	public static int writeString(
 			byte[] memory,
