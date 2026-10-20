@@ -1,12 +1,9 @@
 public class Calcule extends Thread{
-
 	
-	long resultat = 0;
+	int resultat = 0;
 	int valeur = 0;
 	int multiplicateur = 0;
 	int index = 0;
-
-	
 	
 	public Calcule(int valeur, int multiplicateur, int index){
 		this.valeur = valeur;
