@@ -1,6 +1,6 @@
 public class CompteurSecurise {
+    private static int compteurGlobal = 0;
     private static final Object verrou = new Object();
-
 
     static class Incrementeur implements Runnable {
         private final String nom;
@@ -14,27 +14,23 @@ public class CompteurSecurise {
         @Override
         public void run() {
             for (int i = 0; i < nombreIncrements; i++) {
-                // TODO: Expliquer pourquoi cette ligne pose problème
-                compteurGlobal++;  // RACE CONDITION ICI !
+                synchronized (verrou) {
+                    compteurGlobal++;
+                }
             }
-            System.out.println(nom + " terminé. Compteur vu : " + compteurGlobal);
-
-			synchronized(verrou) {
-				// TODO: Placer ici l'opération critique
-				compteurGlobal++;
-			}
+            System.out.println(nom + " terminé. Compteur vu : " + getCompteur());
         }
     }
 
     public static int getCompteur() {
-		synchronized(verrou) {
-			return compteurGlobal;
-		}
-	}
+        synchronized (verrou) {
+            return compteurGlobal;
+        }
+    }
 
-	public static void resetCompteur() {
-		synchronized(verrou) {
-			compteurGlobal = 0;
-		}
-	}
+    public static void resetCompteur() {
+        synchronized (verrou) {
+            compteurGlobal = 0;
+        }
+    }
 }
