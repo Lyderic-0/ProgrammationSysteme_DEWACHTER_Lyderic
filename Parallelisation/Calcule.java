@@ -1,9 +1,9 @@
 public class Calcule extends Thread{
 	
-	int resultat = 0;
-	int valeur = 0;
-	int multiplicateur = 0;
-	int index = 0;
+	private long resultat = 0;
+	private int valeur = 0;
+	private int multiplicateur = 0;
+	private int index = 0;
 	
 	public Calcule(int valeur, int multiplicateur, int index){
 		this.valeur = valeur;
@@ -21,10 +21,12 @@ public class Calcule extends Thread{
 			resultat += valeur * valeur + valeur;
 							// on pourrais aussi mettre un sleep
 		}
+		
+		
 
 	}
 	
-	int getResultat(){
-		return (int) resultat;
+	public long getResultat(){
+		return resultat;
 	}
 }

@@ -6,13 +6,15 @@ public class CalculParallele {
 	 * int cores = Runtime.getRuntime().availableProcessors();
 	 * int nbThreads = 2 * cores;
 	 */
+	 
 	
 
     public static void main(String[] args) {
         System.out.println("=== Calcul Parallelle ===");		
 
 		Calcule[] threads = new Calcule[DONNEES.length];
-		int sommeTotal = 0;
+		long debut = System.nanoTime();
+		long sommeTotal = 0;
 		
         // TODO: Ce code sera remplacé par une version parallèle
         for (int i = 0; i < DONNEES.length; i++) {
@@ -23,13 +25,16 @@ public class CalculParallele {
 		for (int i = 0; i < DONNEES.length; i++) {
 			try{
 				threads[i].join();
+				sommeTotal += threads[i].getResultat();
 				
-			}catch(InterruptedException e){}	
-
+			}catch(InterruptedException e){
+				
+			}	
 		
-        }
-
+        }		
 		
-
+		long duree = (System.nanoTime() - debut) / 1_000_000;
+		System.out.println("Résultat total : " + sommeTotal);
+        System.out.println("Durée : " + duree + " ms");
     }
 }
